@@ -178,26 +178,25 @@ When this code was run, it was observed that the estimator state tracked the act
 
 ![Predict State](imgs/08_PredictState.gif)
 
-### 4: Magnetometer Update ###
+### 4: Magnetometer Update (scenario `10_MagUpdate`) ###
 
-Up until now we've only used the accelerometer and gyro for our state estimation.  In this step, you will be adding the information from the magnetometer to improve your filter's performance in estimating the vehicle's heading.
+Up until now, we've only used the accelerometer and gyro for our state estimation.  In this step, information from the magnetometer to improve your filter's performance in estimating the vehicle's heading is added. The parameter `QYawStd` in the `QuadEstimatorEKF.txt` file was tuned to better balance the long term drift and short-time noise from the magnetometer. The function `UpdateFromMag()` was also updated to estimate the vehicle's heading. 
 
-1. Run scenario `10_MagUpdate`.  This scenario uses a realistic IMU, but the magnetometer update hasn’t been implemented yet. As a result, you will notice that the estimate yaw is drifting away from the real value (and the estimated standard deviation is also increasing).  Note that in this case the plot is showing you the estimated yaw error (`quad.est.e.yaw`), which is drifting away from zero as the simulation runs.  You should also see the estimated standard deviation of that state (white boundary) is also increasing.
+Section 7.3.2 of the [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) was used to implement the magnetometer update. 
 
-2. Tune the parameter `QYawStd` (`QuadEstimatorEKF.txt`) for the QuadEstimatorEKF so that it approximately captures the magnitude of the drift, as demonstrated here:
+Upon implementing these code changes, in lines [330-359](https://github.com/manopaul/Flying-Cars-P4-Estimator/blob/master/src/QuadEstimatorEKF.cpp#L330), the following was observed. 
 
-![mag drift](images/mag-drift.png)
+![Mag Drift](imgs/10_MagUpdate.gif)
 
-3. Implement magnetometer update in the function `UpdateFromMag()`.  Once completed, you should see a resulting plot similar to this one:
 
-![mag good](images/mag-good-solution.png)
 
-***Success criteria:*** *Your goal is to both have an estimated standard deviation that accurately captures the error and maintain an error of less than 0.1rad in heading for at least 10 seconds of the simulation.*
 
-**Hint: after implementing the magnetometer update, you may have to once again tune the parameter `QYawStd` to better balance between the long term drift and short-time noise from the magnetometer.**
+We assume we get a reading from the magnetometer reporting yaw in the global frame. (This measurement may need to be computed using roll and pitch from the attitude filter and the mag vector.)
+zt =  [ψ]
+h(xt) =  [xt,ψ] 
 
-**Hint: see section 7.3.2 of [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) for a refresher on the magnetometer update.**
-
+Again since this is linear, the derivative is a matrix of zeros and ones.
+h′(xt)= [0 0 0 0 0 0 1]
 
 ### 5: Closed Loop + GPS Update ###
 
