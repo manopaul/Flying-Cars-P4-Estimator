@@ -3,6 +3,7 @@
 For easy navigation throughout this document, here is an outline:
  - [Simulator, Code and Config](#simulator-code-and-config)
  - [The Scenarios](#the-scenarios)
+ - [Results (Videos)](#results)
  - [Development Environment Setup](#development-environment-setup)
 
 ## Simulator, Code and Config ##
