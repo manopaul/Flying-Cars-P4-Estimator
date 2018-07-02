@@ -77,26 +77,21 @@ Each of these csv files were imported in Microsoft Excel program and the standar
 
 Then standard deviation values was then plugged into the `config/6_Sensornoise.txt`, specifically as the values for `MeasuredStdDev_GPSPosXY` and `MeasuredStdDev_AccelXY` and the simulation was run again. 
 
-It was observed that the standard deviations accurately captured the value of approximately 68% of the respective measurements.
+It was observed that the standard deviations accurately captured the value of approximately 68% of the respective measurements as shown in the clip below.
 
 ![Sensor Noise](imgs/06_SensorNoise.gif)
 
-### 2: Attitude Estimation ###
+### 2: Attitude Estimation (scenario `07_AttitudeEstimation`) ###
 
-Now let's look at the first step to our state estimation: including information from our IMU.  In this step, you will be improving the complementary filter-type attitude filter with a better rate gyro attitude integration scheme.
+Upon determining the sensor noise and calculating it standard deviation towards state estimation the next step was the improve the complementary filter-type attitude filter with a better rate gyro attitude integration scheme. Section 7.1.2 of the [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) was used to start implementing a non-liner complimentary attitude filter using quaternions. 
 
-1. Run scenario `07_AttitudeEstimation`.  For this simulation, the only sensor used is the IMU and noise levels are set to 0 (see `config/07_AttitudeEstimation.txt` for all the settings for this simulation).  There are two plots visible in this simulation.
-   - The top graph is showing errors in each of the estimated Euler angles.
-   - The bottom shows the true Euler angles and the estimates.
-Observe that there’s quite a bit of error in attitude estimation.
+The `UpdateFromIMU()` function in the `QuadEstimatorEKF.cpp` file was modified to calculate the pitch and roll angles from using Euler angles to using the quaternions integration methods. The built in IntegrateBodyRate method of the Quaternion was used to impove the performance when predicting the pitch and roll angles.
 
-2. In `QuadEstimatorEKF.cpp`, you will see the function `UpdateFromIMU()` contains a complementary filter-type attitude filter.  To reduce the errors in the estimated attitude (Euler Angles), implement a better rate gyro attitude integration scheme.  You should be able to reduce the attitude errors to get within 0.1 rad for each of the Euler angles, as shown in the screenshot below.
+![Lines 102-112](https://github.com/manopaul/Flying-Cars-P4-Estimator/blob/master/src/QuadEstimatorEKF.cpp#L102) of the `QuadEstimatorEKF.cpp` file shows this.
 
-![attitude example](images/attitude-screenshot.png)
+Upon implementing these code changes and running the Attitude estimation simulation again, it was observed that the estimated attitude (Euler Angles) was within 0.1 rad for each of the Euler angles for atleast 3 seconds as shown below.
 
-In the screenshot above the attitude estimation using linear scheme (left) and using the improved nonlinear scheme (right). Note that Y axis on error is much greater on left.
-
-***Success criteria:*** *Your attitude estimator needs to get within 0.1 rad for each of the Euler angles for at least 3 seconds.*
+![Attitude Estimation](imgs/07_AttitudeEstimation.gif)
 
 **Hint: see section 7.1.2 of [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) for a refresher on a good non-linear complimentary filter for attitude using quaternions.**
 
