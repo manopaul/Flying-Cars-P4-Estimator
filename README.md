@@ -88,7 +88,7 @@ Upon determining the sensor noise and calculating it standard deviation towards 
 
 The `UpdateFromIMU()` function in the `QuadEstimatorEKF.cpp` file was modified to calculate the pitch and roll angles by defining a quaternion for the euler angles for φ, θ and ψ using state. The built in IntegrateBodyRate method of the Quaternion was used to impove the performance when predicting the pitch and roll angles.
 
-The code shown below to compute pitch and roll angles are in lines [102-112](https://github.com/manopaul/Flying-Cars-P4-Estimator/blob/master/src/QuadEstimatorEKF.cpp#L102) of the `QuadEstimatorEKF.cpp`:
+The code shown below to compute pitch and roll angles are in lines [102-112](src/QuadEstimatorEKF.cpp#L102) of the `QuadEstimatorEKF.cpp`:
 ```
     Quaternion<float> qt = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, ekfState(6));
     
@@ -111,7 +111,7 @@ A partial derivative of the body-to-global rotation matrix (RGB matrix) was impl
 
 ![RGB Matrix](imgs/RGB%20Matrix%20Derivative.png)
 
-The code shown below to implement the RGB Matrix are in lines [189-220](https://github.com/manopaul/Flying-Cars-P4-Estimator/blob/master/src/QuadEstimatorEKF.cpp#L189) of the `QuadEstimatorEKF.cpp`:
+The code shown below to implement the RGB Matrix are in lines [189-220](src/QuadEstimatorEKF.cpp#L189) of the `QuadEstimatorEKF.cpp`:
 
 ```
     //phi
@@ -135,7 +135,7 @@ The code shown below to implement the RGB Matrix are in lines [189-220](https://
 
 Upon implementing this function, the `Predict()` function wsa modified to predict the state covariance forward by running the covariance prediction scenario and tuning the `QPosXYStd` and the `QVelXYStd` process parameters in `QuadEstimatorEKF.txt`. This was to try to capture the magnitude of the error.
 
-The code shown below to predict covariance are in lines [232-291](https://github.com/manopaul/Flying-Cars-P4-Estimator/blob/master/src/QuadEstimatorEKF.cpp#L232) of the `QuadEstimatorEKF.cpp`:
+The code shown below to predict covariance are in lines [232-291](src/QuadEstimatorEKF.cpp#L232) of the `QuadEstimatorEKF.cpp`:
 
 ```
     MatrixXf A(3,1);
@@ -173,7 +173,7 @@ The predict covariance function calls the PredictState() function, which was mod
     predictedState(5) += acc.z * dt;
 ```
 
-This is implemented in lines [150-187](https://github.com/manopaul/Flying-Cars-P4-Estimator/blob/master/src/QuadEstimatorEKF.cpp#L150)
+This is implemented in lines [150-187](src/QuadEstimatorEKF.cpp#L150)
 
 When this code was run, it was observed that the estimator state tracked the actual state with only a reasonably slow drift as shown below. 
 
@@ -185,9 +185,9 @@ Up until now, we've only used the accelerometer and gyro for our state estimatio
 
 Section 7.3.2 of the [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) was used to implement the magnetometer update. 
 
-Upon implementing these code changes, in lines [330-359](https://github.com/manopaul/Flying-Cars-P4-Estimator/blob/master/src/QuadEstimatorEKF.cpp#L330), the following was observed. 
+Upon implementing these code changes, in lines [330-359](src/QuadEstimatorEKF.cpp#L330), the following was observed. 
 
-![Mag Drift](imgs/10_MagUpdate.gif)
+![Mag Drift](imgs/10_MagUpdate_Full.gif)
 
 ### 5: GPS Update (scenario `11_GPSUpdate`) ###
 
@@ -205,6 +205,7 @@ Then I implemented a simple loop construct in the `UpdateFromGPS()` (as shown be
 
 The following was observed with an estimated position error of < 1m. for the entire simulation. 
 
+![GPS Update](imgs/11_GPSUpdate_Full.gif)
 
 ### 6: Adding Your Controller ###
 
