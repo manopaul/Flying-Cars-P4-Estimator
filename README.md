@@ -58,11 +58,11 @@ Any changes to this file can be observed in real time and the effect is shown in
 
 ## The Scenarios ##
 
- - [1: Sensor Noise](#1-Sensor-Noise-(scenario-`06_NoisySensors`)
- - [2: Attitude Estimation](#step-2-attitude-estimation)
+ - [1: Sensor Noise](#1-Sensor-Noise)
+ - [2: Attitude Estimation](#2-attitude-estimation)
  - [3: Prediction](#3-predictionp)
  - [4: Magnetometer Update](#4-magnetometer-update)
- - [5: Closed Loop + GPS Update](#5-closed-loop--gps-update)
+ - [5: Closed Loop + GPS Update](#5-gps-update)
  - [6: Adding Your Controller](#6-adding-your-controller)
 
 
@@ -189,29 +189,17 @@ Upon implementing these code changes, in lines [330-359](https://github.com/mano
 
 ![Mag Drift](imgs/10_MagUpdate.gif)
 
-### 5: Closed Loop + GPS Update ###
+### 5: GPS Update (scenario `11_GPSUpdate`) ###
 
-1. Run scenario `11_GPSUpdate`.  At the moment this scenario is using both an ideal estimator and and ideal IMU.  Even with these ideal elements, watch the position and velocity errors (bottom right). As you see they are drifting away, since GPS update is not yet implemented.
-
-2. Let's change to using your estimator by setting `Quad.UseIdealEstimator` to 0 in `config/11_GPSUpdate.txt`.  Rerun the scenario to get an idea of how well your estimator work with an ideal IMU.
-
-3. Now repeat with realistic IMU by commenting out these lines in `config/11_GPSUpdate.txt`:
+Even though we have implemented an ideal estimator and and ideal IMU, the quad is seen to the drifting away smce GPS is not taken into account. As per the instructions, first I turned off the ideal estimator configuration setting (`Quad.UseIdealEstimator`) and then commented out the realistic IMU (as shown below) in the `config/11_GPSUpdate.txt` file.
 ```
 #SimIMU.AccelStd = 0,0,0
 #SimIMU.GyroStd = 0,0,0
 ```
+Then I implemented a simple loop construct in the `UpdateFromGPS()` method to implement EKF using GPS update and re-ran the simulation. Lines []() show the code for implmenting this GPS update. 
 
-4. Tune the process noise model in `QuadEstimatorEKF.txt` to try to approximately capture the error you see with the estimated uncertainty (standard deviation) of the filter.
+The following was observed with an estimated position error of < 1m. for the entire simulation. 
 
-5. Implement the EKF GPS Update in the function `UpdateFromGPS()`.
-
-6. Now once again re-run the simulation.  Your objective is to complete the entire simulation cycle with estimated position error of < 1m (you’ll see a green box over the bottom graph if you succeed).  You may want to try experimenting with the GPS update parameters to try and get better performance.
-
-***Success criteria:*** *Your objective is to complete the entire simulation cycle with estimated position error of < 1m.*
-
-**Hint: see section 7.3.1 of [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) for a refresher on the GPS update.**
-
-At this point, congratulations on having a working estimator!
 
 ### 6: Adding Your Controller ###
 
