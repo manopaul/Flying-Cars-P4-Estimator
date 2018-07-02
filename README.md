@@ -87,19 +87,24 @@ Upon determining the sensor noise and calculating it standard deviation towards 
 
 The `UpdateFromIMU()` function in the `QuadEstimatorEKF.cpp` file was modified to calculate the pitch and roll angles from using Euler angles to using the quaternions integration methods. The built in IntegrateBodyRate method of the Quaternion was used to impove the performance when predicting the pitch and roll angles.
 
-![Lines 102-112](https://github.com/manopaul/Flying-Cars-P4-Estimator/blob/master/src/QuadEstimatorEKF.cpp#L102) of the `QuadEstimatorEKF.cpp` file shows this.
+The code shown below to compute pitch and roll angles are in lines [102-112](https://github.com/manopaul/Flying-Cars-P4-Estimator/blob/master/src/QuadEstimatorEKF.cpp#L102) of the `QuadEstimatorEKF.cpp`:
+```
+    Quaternion<float> qt = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, ekfState(6));
+    
+    //Roll, Pitch and Yaw predicted using Quaternions after converting from Euler angles
+    qt.IntegrateBodyRate(gyro, dtIMU);
+    float predictedRoll = qt.Roll();
+    float predictedPitch = qt.Pitch();
+    ekfState(6) = qt.Yaw();
+```
 
 Upon implementing these code changes and running the Attitude estimation simulation again, it was observed that the estimated attitude (Euler Angles) was within 0.1 rad for each of the Euler angles for atleast 3 seconds as shown below.
 
 ![Attitude Estimation](imgs/07_AttitudeEstimation.gif)
 
-**Hint: see section 7.1.2 of [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) for a refresher on a good non-linear complimentary filter for attitude using quaternions.**
-
-
 ### 3: Prediction Step ###
 
 In this next step you will be implementing the prediction step of your filter.
-
 
 1. Run scenario `08_PredictState`.  This scenario is configured to use a perfect IMU (only an IMU). Due to the sensitivity of double-integration to attitude errors, we've made the accelerometer update very insignificant (`QuadEstimatorEKF.attitudeTau = 100`).  The plots on this simulation show element of your estimated state and that of the true state.  At the moment you should see that your estimated state does not follow the true state.
 
