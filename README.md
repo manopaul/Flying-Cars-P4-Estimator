@@ -188,16 +188,6 @@ Upon implementing these code changes, in lines [330-359](https://github.com/mano
 
 ![Mag Drift](imgs/10_MagUpdate.gif)
 
-
-
-
-We assume we get a reading from the magnetometer reporting yaw in the global frame. (This measurement may need to be computed using roll and pitch from the attitude filter and the mag vector.)
-zt =  [ψ]
-h(xt) =  [xt,ψ] 
-
-Again since this is linear, the derivative is a matrix of zeros and ones.
-h′(xt)= [0 0 0 0 0 0 1]
-
 ### 5: Closed Loop + GPS Update ###
 
 1. Run scenario `11_GPSUpdate`.  At the moment this scenario is using both an ideal estimator and and ideal IMU.  Even with these ideal elements, watch the position and velocity errors (bottom right). As you see they are drifting away, since GPS update is not yet implemented.
