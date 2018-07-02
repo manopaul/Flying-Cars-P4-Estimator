@@ -72,9 +72,14 @@ In order to make the quadcopter realistic, sensor noise had to be factored in. A
 
 Each of these csv files were imported in Microsoft Excel program and the standard deviation was computed using Excel's built in function (STDEV). Figures below show this calculation.
 
+![GPS X data Standard Deviation](imgs/STDEV - Graph 1.png)
+![Accelerometer X data Standard Deviation](imgs/STDEV - Graph 2.png)
+
 Then standard deviation values was then plugged into the `config/6_Sensornoise.txt`, specifically as the values for `MeasuredStdDev_GPSPosXY` and `MeasuredStdDev_AccelXY` and the simulation was run again. 
 
 It was observed that the standard deviations accurately captured the value of approximately 68% of the respective measurements.
+
+![Sensor Noise](imgs/06_SensorNoise.gif)
 
 ### 2: Attitude Estimation ###
 
