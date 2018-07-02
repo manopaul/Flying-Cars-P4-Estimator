@@ -2,7 +2,7 @@
 
 For easy navigation throughout this document, here is an outline:
  - [Simulator, Code and Config](#simulator-code-and-config)
- - [The scenarios](#the-scenarios)
+ - [The Scenarios](#the-scenarios)
  - [Development environment setup](#development-environment-setup)
 
 ## Simulator, Code and Config ##
@@ -58,12 +58,11 @@ Any changes to this file can be observed in real time and the effect is shown in
 ## The Scenarios ##
 
  - [1: Sensor Noise](#1-sensor-noise-scenario-06_noisysensors)
- - [2: Attitude Estimation](#2-attitude-estimation)
- - [3: Prediction](#3-predictionp)
- - [4: Magnetometer Update](#4-magnetometer-update)
- - [5: Closed Loop + GPS Update](#5-gps-update)
- - [6: Adding Your Controller](#6-adding-your-controller)
-
+ - [2: Attitude Estimation](#2-attitude-estimation-scenario-07_AttitudeEstimation)
+ - [3: Prediction](#3-prediction-scenario-08_PredictState-and-scenario-09_PredictionCov)
+ - [4: Magnetometer Update](#4-magnetometer-update-scenario-10_MagUpdate)
+ - [5: GPS Update](#5-gps-update-scenario-11_GPSUpdate)
+ - [6: Update Controller](#6-update-controller)
 
 ### 1: Sensor Noise (scenario `06_NoisySensors`) ###
 
@@ -102,7 +101,7 @@ Upon implementing these code changes and running the Attitude estimation simulat
 
 ![Attitude Estimation](imgs/07_AttitudeEstimation.gif)
 
-### 3: Prediction Step (scenario `08_PredictState` and scenario `09_PredictionCov`) ###
+### 3: Prediction (scenario `08_PredictState` and scenario `09_PredictionCov`) ###
 
 The next step was to implement the prediction step of your filter. 
 
@@ -206,10 +205,9 @@ The following was observed with an estimated position error of < 1m. for the ent
 
 ![GPS Update](imgs/11_GPSUpdate_Full.gif)
 
-### 6: Adding Your Controller ###
+### 6: Update Controller ###
 
 The `QuadController.cpp` and `QuadControlParams.txt` were replaced with the files developed in the Controller project and all the scenarios were successfully run. 
-
 
 
 ## Development Environment Setup ##
