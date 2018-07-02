@@ -28,27 +28,63 @@ Once you have the simulator running, you can observe the effects of the code cha
 
 #### The Code ####
 
-For this project, all the code was written in `src/QuadEstimatorEKF.cpp`. 
+For this project, all the code to implement the Extended Kalman Filter (EKF) estimator was written in `src/QuadEstimatorEKF.cpp`. 
+
+ - The EKF implementation exposes both the estimated state and a number of additional variables. In particular:
+
+   - `Quad.Est.E.X` is the error in estimated X position from true value.  More generally, the variables in `<vehicle>.Est.E.*` are relative errors, though some are combined errors (e.g. MaxEuler).
+
+   - `Quad.Est.S.X` is the estimated standard deviation of the X state (that is, the square root of the appropriate diagonal variable in the covariance matrix). More generally, the variables in `<vehicle>.Est.S.*` are standard deviations calculated from the estimator state covariance matrix.
+
+   - `Quad.Est.D` contains miscellaneous additional debug variables useful in diagnosing the filter. 
 
 #### The Config ####
 
-All the configuration files for the controller and the vehicle are in the `config` directory.  Changes were made to the `QuadEstimatorEKF.txt` text file and the text files for the respective tasks/scenarios. Any changes to this file can be observed in real time and the effect is shown in the quad(s) in the simulator. 
+All the configuration files for the controller and the vehicle are in the `config` directory. Parameters for tuning the EKF are in the parameter file `QuadEstimatorEKF.txt`. In the `config` directory, in addition to finding the configuration files for your controller and your estimator, you will also see configuration files for each of the simulations.  
+
+Changes were made to the `QuadEstimatorEKF.txt` text file and the text files for the respective tasks/scenarios. As an example, if we look through the configuration file for scenario 07, we see the following parameters controlling the sensor:
+
+```
+# Sensors
+Quad.Sensors = SimIMU
+# use a perfect IMU
+SimIMU.AccelStd = 0,0,0
+SimIMU.GyroStd = 0,0,0
+```
+
+This configuration tells us that the simulator is only using an IMU and the sensor data will have no noise.  You will notice that for each simulator these parameters will change slightly as additional sensors are being used and the noise behavior of the sensors change.
+
+Any changes to this file can be observed in real time and the effect is shown in the quad(s) in the simulator. 
 
 ## The Scenarios ##
 
-### Introduction - Hover (scenario 1) ###
+ - [1: Sensor Noise](#1-sensor-noise)
+ - [2: Attitude Estimation](#step-2-attitude-estimation)
+ - [3: Prediction](#3-predictionp)
+ - [4: Magnetometer Update](#4-magnetometer-update)
+ - [5: Closed Loop + GPS Update](#5-closed-loop--gps-update)
+ - [6: Adding Your Controller](#6-adding-your-controller)
 
-When you run the simulator, you'll notice your quad is falling straight down.  This is due to the fact that the thrusts are simply being set to:
-```
-QuadControlParams.Mass * 9.81 / 4
-```
-If the mass doesn't match the actual mass of the quad, it'll fall down.  The `Mass` parameter in `QuadControlParams.txt` was tuned to make the vehicle more or less stay in the same spot.
 
-With the proper mass set, the quad hovered more or less in the same spot as shown below.
+### 1: Sensor Noise ###
 
-<p align="center">
-<img src="animations/1_Hover.gif" width="500"/>
-</p>
+In order to make the 
+
+For the controls project, the simulator was working with a perfect set of sensors, meaning none of the sensors had any noise.  The first step to adding additional realism to the problem, and developing an estimator, is adding noise to the quad's sensors.  For the first step, you will collect some simulated noisy sensor data and estimate the standard deviation of the quad's sensor.
+
+1. Run the simulator in the same way as you have before
+
+2. Choose scenario `06_NoisySensors`.  In this simulation, the interest is to record some sensor data on a static quad, so you will not see the quad move.  You will see two plots at the bottom, one for GPS X position and one for The accelerometer's x measurement.  The dashed lines are a visualization of a single standard deviation from 0 for each signal. The standard deviations are initially set to arbitrary values (after processing the data in the next step, you will be adjusting these values).  If they were set correctly, we should see ~68% of the measurement points fall into the +/- 1 sigma bound.  When you run this scenario, the graphs you see will be recorded to the following csv files with headers: `config/log/Graph1.txt` (GPS X data) and `config/log/Graph2.txt` (Accelerometer X data).
+
+3. Process the logged files to figure out the standard deviation of the the GPS X signal and the IMU Accelerometer X signal.
+
+4. Plug in your result into the top of `config/6_Sensornoise.txt`.  Specially, set the values for `MeasuredStdDev_GPSPosXY` and `MeasuredStdDev_AccelXY` to be the values you have calculated.
+
+5. Run the simulator. If your values are correct, the dashed lines in the simulation will eventually turn green, indicating you’re capturing approx 68% of the respective measurements (which is what we expect within +/- 1 sigma bound for a Gaussian noise model)
+
+***Success criteria:*** *Your standard deviations should accurately capture the value of approximately 68% of the respective measurements.*
+
+NOTE: Your answer should match the settings in `SimulatedSensors.txt`, where you can also grab the simulated noise parameters for all the other sensors.
 
 ### Body rate and roll/pitch control (scenario 2) ###
 
@@ -399,40 +435,7 @@ This project will continue to use the C++ development environment you set up in 
  3. You should now be able to compile and run the estimation simulator just as you did in the controls project
 
 
-### Project Structure ###
 
-For this project, you will be interacting with a few more files than before.
-
- - The EKF is already partially implemented for you in `QuadEstimatorEKF.cpp`
-
- - Parameters for tuning the EKF are in the parameter file `QuadEstimatorEKF.txt`
-
- - When you turn on various sensors (the scenarios configure them, e.g. `Quad.Sensors += SimIMU, SimMag, SimGPS`), additional sensor plots will become available to see what the simulated sensors measure.
-
- - The EKF implementation exposes both the estimated state and a number of additional variables. In particular:
-
-   - `Quad.Est.E.X` is the error in estimated X position from true value.  More generally, the variables in `<vehicle>.Est.E.*` are relative errors, though some are combined errors (e.g. MaxEuler).
-
-   - `Quad.Est.S.X` is the estimated standard deviation of the X state (that is, the square root of the appropriate diagonal variable in the covariance matrix). More generally, the variables in `<vehicle>.Est.S.*` are standard deviations calculated from the estimator state covariance matrix.
-
-   - `Quad.Est.D` contains miscellaneous additional debug variables useful in diagnosing the filter. You may or might not find these useful but they were helpful to us in verifying the filter and may give you some ideas if you hit a block.
-
-
-#### `config` Directory ####
-
-In the `config` directory, in addition to finding the configuration files for your controller and your estimator, you will also see configuration files for each of the simulations.  For this project, you will be working with simulations 06 through 11 and you may find it insightful to take a look at the configuration for the simulation.
-
-As an example, if we look through the configuration file for scenario 07, we see the following parameters controlling the sensor:
-
-```
-# Sensors
-Quad.Sensors = SimIMU
-# use a perfect IMU
-SimIMU.AccelStd = 0,0,0
-SimIMU.GyroStd = 0,0,0
-```
-
-This configuration tells us that the simulator is only using an IMU and the sensor data will have no noise.  You will notice that for each simulator these parameters will change slightly as additional sensors are being used and the noise behavior of the sensors change.
 
 
 ## The Tasks ##
