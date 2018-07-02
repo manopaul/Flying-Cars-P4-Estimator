@@ -1,4 +1,4 @@
-# Flying Cars - Project 4 - Implementing Estimator #
+# Flying Cars - Project 4 - Implementing Extended Kalman Filter (EKF) Estimator #
 
 For easy navigation throughout this document, here is an outline:
  - [Simulator, Code and Config](#simulator-code-and-config)
@@ -66,26 +66,15 @@ Any changes to this file can be observed in real time and the effect is shown in
  - [6: Adding Your Controller](#6-adding-your-controller)
 
 
-### 1: Sensor Noise ###
+### 1: Sensor Noise (scenario `06_NoisySensors`) ###
 
-In order to make the 
+In order to make the quadcopter realistic, sensor noise had to be factored in. After running the simulator for the Sensor Noise scenario, the GPS X data and Accelerometer X data, which were recorded respectively as Graph 1 and Graph 2 in the log directory, was processed to determine the standard deviation. Graph 1 and Graph 2 were comma seprated value (csv) files. 
 
-For the controls project, the simulator was working with a perfect set of sensors, meaning none of the sensors had any noise.  The first step to adding additional realism to the problem, and developing an estimator, is adding noise to the quad's sensors.  For the first step, you will collect some simulated noisy sensor data and estimate the standard deviation of the quad's sensor.
+Each of these csv files were imported in Microsoft Excel program and the standard deviation was computed using Excel's built in function (STDEV). Figures below show this calculation.
 
-1. Run the simulator in the same way as you have before
+Then standard deviation values was then plugged into the `config/6_Sensornoise.txt`, specifically as the values for `MeasuredStdDev_GPSPosXY` and `MeasuredStdDev_AccelXY` and the simulation was run again. 
 
-2. Choose scenario `06_NoisySensors`.  In this simulation, the interest is to record some sensor data on a static quad, so you will not see the quad move.  You will see two plots at the bottom, one for GPS X position and one for The accelerometer's x measurement.  The dashed lines are a visualization of a single standard deviation from 0 for each signal. The standard deviations are initially set to arbitrary values (after processing the data in the next step, you will be adjusting these values).  If they were set correctly, we should see ~68% of the measurement points fall into the +/- 1 sigma bound.  When you run this scenario, the graphs you see will be recorded to the following csv files with headers: `config/log/Graph1.txt` (GPS X data) and `config/log/Graph2.txt` (Accelerometer X data).
-
-3. Process the logged files to figure out the standard deviation of the the GPS X signal and the IMU Accelerometer X signal.
-
-4. Plug in your result into the top of `config/6_Sensornoise.txt`.  Specially, set the values for `MeasuredStdDev_GPSPosXY` and `MeasuredStdDev_AccelXY` to be the values you have calculated.
-
-5. Run the simulator. If your values are correct, the dashed lines in the simulation will eventually turn green, indicating you’re capturing approx 68% of the respective measurements (which is what we expect within +/- 1 sigma bound for a Gaussian noise model)
-
-***Success criteria:*** *Your standard deviations should accurately capture the value of approximately 68% of the respective measurements.*
-
-NOTE: Your answer should match the settings in `SimulatedSensors.txt`, where you can also grab the simulated noise parameters for all the other sensors.
-
+It was observed that the standard deviations accurately captured the value of approximately 68% of the respective measurements.
 
 ### 2: Attitude Estimation ###
 
