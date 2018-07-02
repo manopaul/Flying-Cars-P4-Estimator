@@ -3,7 +3,6 @@
 For easy navigation throughout this document, here is an outline:
  - [Simulator, Code and Config](#simulator-code-and-config)
  - [The scenarios](#the-scenarios)
- - [Results](#results-and-performance-metrics)
  - [Development environment setup](#development-environment-setup)
 
 ## Simulator, Code and Config ##
@@ -58,7 +57,7 @@ Any changes to this file can be observed in real time and the effect is shown in
 
 ## The Scenarios ##
 
- - [1: Sensor Noise](#1-Sensor-Noise)
+ - [1: Sensor Noise](#1-sensor-noise-scenario-06_noisysensors)
  - [2: Attitude Estimation](#2-attitude-estimation)
  - [3: Prediction](#3-predictionp)
  - [4: Magnetometer Update](#4-magnetometer-update)
