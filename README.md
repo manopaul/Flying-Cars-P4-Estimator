@@ -236,7 +236,7 @@ For Windows, the recommended IDE is Visual Studio.  Here are the steps required 
 3. From the *Project* menu, select the *Retarget solution* option and select the Windows SDK that is installed on your computer (this should have been installed when installing Visual Studio or upon opening of the project).
 4. Make sure platform matches the flavor of Windows you are using (x86 or x64). The platform is visible next to the green play button in the Visual Studio toolbar:
 
-![x64](x64.png)
+![x64](imgs/x64.png)
 
 5. To compile and run the project / simulator, simply click on the green play button at the top of the screen.  When you run the simulator, you should see a single quadcopter, falling down.
 
