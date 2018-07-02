@@ -87,7 +87,7 @@ For the controls project, the simulator was working with a perfect set of sensor
 NOTE: Your answer should match the settings in `SimulatedSensors.txt`, where you can also grab the simulated noise parameters for all the other sensors.
 
 
-### Step 2: Attitude Estimation ###
+### 2: Attitude Estimation ###
 
 Now let's look at the first step to our state estimation: including information from our IMU.  In this step, you will be improving the complementary filter-type attitude filter with a better rate gyro attitude integration scheme.
 
@@ -107,7 +107,7 @@ In the screenshot above the attitude estimation using linear scheme (left) and u
 **Hint: see section 7.1.2 of [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) for a refresher on a good non-linear complimentary filter for attitude using quaternions.**
 
 
-### Step 3: Prediction Step ###
+### 3: Prediction Step ###
 
 In this next step you will be implementing the prediction step of your filter.
 
@@ -150,7 +150,7 @@ Another set of bad examples is shown below for having a `QVelXYStd` too large (f
 ***Success criteria:*** *This step doesn't have any specific measurable criteria being checked.*
 
 
-### Step 4: Magnetometer Update ###
+### 4: Magnetometer Update ###
 
 Up until now we've only used the accelerometer and gyro for our state estimation.  In this step, you will be adding the information from the magnetometer to improve your filter's performance in estimating the vehicle's heading.
 
@@ -171,7 +171,7 @@ Up until now we've only used the accelerometer and gyro for our state estimation
 **Hint: see section 7.3.2 of [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) for a refresher on the magnetometer update.**
 
 
-### Step 5: Closed Loop + GPS Update ###
+### 5: Closed Loop + GPS Update ###
 
 1. Run scenario `11_GPSUpdate`.  At the moment this scenario is using both an ideal estimator and and ideal IMU.  Even with these ideal elements, watch the position and velocity errors (bottom right). As you see they are drifting away, since GPS update is not yet implemented.
 
@@ -195,7 +195,7 @@ Up until now we've only used the accelerometer and gyro for our state estimation
 
 At this point, congratulations on having a working estimator!
 
-### Step 6: Adding Your Controller ###
+### 6: Adding Your Controller ###
 
 Up to this point, we have been working with a controller that has been relaxed to work with an estimated state instead of a real state.  So now, you will see how well your controller performs and de-tune your controller accordingly.
 
@@ -288,31 +288,6 @@ make
 ```
 
 3. You should now be able to compile and run the estimation simulator.
-
-# Estimation Project #
-
-
-This README is broken down into the following sections:
-
- - [Setup](#setup) - the environment and code setup required to get started and a brief overview of the project structure
- - [The Tasks](#the-tasks) - the tasks you will need to complete for the project
- - [Tips and Tricks](#tips-and-tricks) - some additional tips and tricks you may find useful along the way
- - [Submission](#submission) - overview of the requirements for your project submission
-
-
-## Setup ##
-
-This project will continue to use the C++ development environment you set up in the Controls C++ project.
-
- 1. Clone the repository
- ```
- git clone https://github.com/udacity/FCND-Estimation-CPP.git
- ```
-
- 2. Import the code into your IDE like done in the [Controls C++ project](https://github.com/udacity/FCND-Controls-CPP#development-environment-setup)
- 
- 3. You should now be able to compile and run the estimation simulator just as you did in the controls project
-
 
 ## Resources ##
 
