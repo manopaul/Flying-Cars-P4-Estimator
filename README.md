@@ -58,10 +58,10 @@ Any changes to this file can be observed in real time and the effect is shown in
 ## The Scenarios ##
 
  - [1: Sensor Noise](#1-sensor-noise-scenario-06_noisysensors)
- - [2: Attitude Estimation](#2-attitude-estimation-scenario-07_AttitudeEstimation)
- - [3: Prediction](#3-prediction-scenario-08_PredictState-and-scenario-09_PredictionCov)
- - [4: Magnetometer Update](#4-magnetometer-update-scenario-10_MagUpdate)
- - [5: GPS Update](#5-gps-update-scenario-11_GPSUpdate)
+ - [2: Attitude Estimation](#2-attitude-estimation-scenario-07_attitudeestimation)
+ - [3: Prediction](#3-prediction-scenario-08_predictstate-and-scenario-09_predictioncov)
+ - [4: Magnetometer Update](#4-magnetometer-update-scenario-10_magupdate)
+ - [5: GPS Update](#5-gps-update-scenario-11_gpsupdate)
  - [6: Update Controller](#6-update-controller)
 
 ### 1: Sensor Noise (scenario `06_NoisySensors`) ###
