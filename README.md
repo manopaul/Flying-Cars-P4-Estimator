@@ -211,7 +211,7 @@ The following was observed with an estimated position error of < 1m. for the ent
 The `QuadController.cpp` and `QuadControlParams.txt` were replaced with the files developed in the Controller project and all the scenarios were successfully run. 
 
 
-### 6: Results ### 
+### Results ### 
 The videos of each of the above mentioned scenarios can be found in the [videos](videos) directory.
 
 ## Development Environment Setup ##
