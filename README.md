@@ -196,7 +196,12 @@ Even though we have implemented an ideal estimator and and ideal IMU, the quad i
 #SimIMU.AccelStd = 0,0,0
 #SimIMU.GyroStd = 0,0,0
 ```
-Then I implemented a simple loop construct in the `UpdateFromGPS()` method to implement EKF using GPS update and re-ran the simulation. Lines []() show the code for implmenting this GPS update. 
+Then I implemented a simple loop construct in the `UpdateFromGPS()` (as shown below) method to implement EKF using GPS update and re-ran the simulation. Lines [293-328](src/QuadEstimatorEKF.cpp#L293) show the code for implmenting this GPS update. 
+
+    for ( int i = 0; i < 6; i++) {
+        zFromX(i) = ekfState(i);
+        hPrime(i,i) = 1;
+    }
 
 The following was observed with an estimated position error of < 1m. for the entire simulation. 
 
