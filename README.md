@@ -87,155 +87,6 @@ For the controls project, the simulator was working with a perfect set of sensor
 NOTE: Your answer should match the settings in `SimulatedSensors.txt`, where you can also grab the simulated noise parameters for all the other sensors.
 
 
-
-
-## Development Environment Setup ##
-
-Regardless of your development platform, the first step is to download or clone this repository.
-
- 1. Clone the repository
- ```
- git clone https://github.com/udacity/FCND-Estimation-CPP.git
- ```
- 
-Once you have the code for the simulator, you will need to install the necessary compiler and IDE necessary for running the simulator.
-Here are the setup and install instructions for each of the recommended IDEs for each different OS options:
-
-This project will continue to use the C++ development environment you set up in the Controls C++ project.
-
-### Windows ###
-
-For Windows, the recommended IDE is Visual Studio.  Here are the steps required for getting the project up and running using Visual Studio.
-
-1. Download and install [Visual Studio](https://www.visualstudio.com/vs/community/)
-2. Select *Open Project / Solution* and open `<simulator>/project/Simulator.sln`
-3. From the *Project* menu, select the *Retarget solution* option and select the Windows SDK that is installed on your computer (this should have been installed when installing Visual Studio or upon opening of the project).
-4. Make sure platform matches the flavor of Windows you are using (x86 or x64). The platform is visible next to the green play button in the Visual Studio toolbar:
-
-![x64](x64.png)
-
-5. To compile and run the project / simulator, simply click on the green play button at the top of the screen.  When you run the simulator, you should see a single quadcopter, falling down.
-
-### OS X ###
-
-For Mac OS X, the recommended IDE is XCode, which you can get via the App Store.
-
-1. Download and install XCode from the App Store if you don't already have it installed.
-2. Open the project from the `<simulator>/project` directory.
-3. After opening project, you need to set the working directory:
-  1. Go to *(Project Name)* | *Edit Scheme*
-  2. In new window, under *Run/Debug* on left side, under the *Options* tab, set Working Directory to `$PROJECT_DIR` and check ‘use custom working directory’.
-  3. Compile and run the project. You should see a single quadcopter, falling down.
-
-### Linux ###
-
-For Linux, the recommended IDE is QtCreator.
-
-1. Download and install QtCreator.
-2. Open the `.pro` file from the `<simulator>/project` directory.
-3. Compile and run the project (using the tab `Build` select the `qmake` option.  You should see a single quadcopter, falling down.
-
-**NOTE:** You may need to install the GLUT libs using `sudo apt-get install freeglut3-dev`
-
-
-### Advanced Versions ###
-
-These are some more advanced setup instructions for those of you who prefer to use a different IDE or build the code manually.  Note that these instructions do assume a certain level of familiarity with the approach and are not as detailed as the instructions above.
-
-#### CLion IDE ####
-
-For those of you who are using the CLion IDE for developement on your platform, we have included the necessary `CMakeLists.txt` file needed to build the simulation.
-
-#### CMake on Linux ####
-
-For those of you interested in doing manual builds using `cmake`, we have provided a `CMakeLists.txt` file with the necessary configuration.
-
-**NOTE: This has only been tested on Ubuntu 16.04, however, these instructions should work for most linux versions.  Also note that these instructions assume knowledge of `cmake` and the required `cmake` dependencies are installed.**
-
-1. Create a new directory for the build files:
-
-```sh
-cd FCND-Controls-CPP
-mkdir build
-```
-
-2. Navigate to the build directory and run `cmake` and then compile and build the code:
-
-```sh
-cd build
-cmake ..
-make
-```
-
-3. You should now be able to compile and run the estimation simulator.
-
-
-
-
-
-
-# Estimation Project #
-
-
-This README is broken down into the following sections:
-
- - [Setup](#setup) - the environment and code setup required to get started and a brief overview of the project structure
- - [The Tasks](#the-tasks) - the tasks you will need to complete for the project
- - [Tips and Tricks](#tips-and-tricks) - some additional tips and tricks you may find useful along the way
- - [Submission](#submission) - overview of the requirements for your project submission
-
-
-## Setup ##
-
-This project will continue to use the C++ development environment you set up in the Controls C++ project.
-
- 1. Clone the repository
- ```
- git clone https://github.com/udacity/FCND-Estimation-CPP.git
- ```
-
- 2. Import the code into your IDE like done in the [Controls C++ project](https://github.com/udacity/FCND-Controls-CPP#development-environment-setup)
- 
- 3. You should now be able to compile and run the estimation simulator just as you did in the controls project
-
-
-
-
-
-## The Tasks ##
-
-Once again, you will be building up your estimator in pieces.  At each step, there will be a set of success criteria that will be displayed both in the plots and in the terminal output to help you along the way.
-
-Project outline:
-
- - [Step 1: Sensor Noise](#step-1-sensor-noise)
- - [Step 2: Attitude Estimation](#step-2-attitude-estimation)
- - [Step 3: Prediction Step](#step-3-prediction-step)
- - [Step 4: Magnetometer Update](#step-4-magnetometer-update)
- - [Step 5: Closed Loop + GPS Update](#step-5-closed-loop--gps-update)
- - [Step 6: Adding Your Controller](#step-6-adding-your-controller)
-
-
-
-### Step 1: Sensor Noise ###
-
-For the controls project, the simulator was working with a perfect set of sensors, meaning none of the sensors had any noise.  The first step to adding additional realism to the problem, and developing an estimator, is adding noise to the quad's sensors.  For the first step, you will collect some simulated noisy sensor data and estimate the standard deviation of the quad's sensor.
-
-1. Run the simulator in the same way as you have before
-
-2. Choose scenario `06_NoisySensors`.  In this simulation, the interest is to record some sensor data on a static quad, so you will not see the quad move.  You will see two plots at the bottom, one for GPS X position and one for The accelerometer's x measurement.  The dashed lines are a visualization of a single standard deviation from 0 for each signal. The standard deviations are initially set to arbitrary values (after processing the data in the next step, you will be adjusting these values).  If they were set correctly, we should see ~68% of the measurement points fall into the +/- 1 sigma bound.  When you run this scenario, the graphs you see will be recorded to the following csv files with headers: `config/log/Graph1.txt` (GPS X data) and `config/log/Graph2.txt` (Accelerometer X data).
-
-3. Process the logged files to figure out the standard deviation of the the GPS X signal and the IMU Accelerometer X signal.
-
-4. Plug in your result into the top of `config/6_Sensornoise.txt`.  Specially, set the values for `MeasuredStdDev_GPSPosXY` and `MeasuredStdDev_AccelXY` to be the values you have calculated.
-
-5. Run the simulator. If your values are correct, the dashed lines in the simulation will eventually turn green, indicating you’re capturing approx 68% of the respective measurements (which is what we expect within +/- 1 sigma bound for a Gaussian noise model)
-
-***Success criteria:*** *Your standard deviations should accurately capture the value of approximately 68% of the respective measurements.*
-
-NOTE: Your answer should match the settings in `SimulatedSensors.txt`, where you can also grab the simulated noise parameters for all the other sensors.
-
-
 ### Step 2: Attitude Estimation ###
 
 Now let's look at the first step to our state estimation: including information from our IMU.  In this step, you will be improving the complementary filter-type attitude filter with a better rate gyro attitude integration scheme.
@@ -358,27 +209,111 @@ Up to this point, we have been working with a controller that has been relaxed t
 
 ***Success criteria:*** *Your objective is to complete the entire simulation cycle with estimated position error of < 1m.*
 
+## Development Environment Setup ##
 
-## Tips and Tricks ##
+Regardless of your development platform, the first step is to download or clone this repository.
 
- - When it comes to transposing matrices, `.transposeInPlace()` is the function you want to use to transpose a matrix
+ 1. Clone the repository
+ ```
+ git clone https://github.com/udacity/FCND-Estimation-CPP.git
+ ```
+ 
+Once you have the code for the simulator, you will need to install the necessary compiler and IDE necessary for running the simulator.
+Here are the setup and install instructions for each of the recommended IDEs for each different OS options:
 
- - The [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) document contains a helpful mathematical breakdown of the core elements on your estimator
+This project will continue to use the C++ development environment you set up in the Controls C++ project.
 
-## Submission ##
+### Windows ###
 
-For this project, you will need to submit:
+For Windows, the recommended IDE is Visual Studio.  Here are the steps required for getting the project up and running using Visual Studio.
 
- - a completed estimator that meets the performance criteria for each of the steps by submitting:
-   - `QuadEstimatorEKF.cpp`
-   - `config/QuadEstimatorEKF.txt`
+1. Download and install [Visual Studio](https://www.visualstudio.com/vs/community/)
+2. Select *Open Project / Solution* and open `<simulator>/project/Simulator.sln`
+3. From the *Project* menu, select the *Retarget solution* option and select the Windows SDK that is installed on your computer (this should have been installed when installing Visual Studio or upon opening of the project).
+4. Make sure platform matches the flavor of Windows you are using (x86 or x64). The platform is visible next to the green play button in the Visual Studio toolbar:
 
- - a re-tuned controller that, in conjunction with your tuned estimator, is capable of meeting the criteria laid out in Step 6 by submitting:
-   - `QuadController.cpp`
-   - `config/QuadControlParams.txt`
+![x64](x64.png)
 
- - a write up addressing all the points of the rubric
+5. To compile and run the project / simulator, simply click on the green play button at the top of the screen.  When you run the simulator, you should see a single quadcopter, falling down.
 
-## Authors ##
+### OS X ###
 
-Thanks to Fotokite for the initial development of the project code and simulator.
+For Mac OS X, the recommended IDE is XCode, which you can get via the App Store.
+
+1. Download and install XCode from the App Store if you don't already have it installed.
+2. Open the project from the `<simulator>/project` directory.
+3. After opening project, you need to set the working directory:
+  1. Go to *(Project Name)* | *Edit Scheme*
+  2. In new window, under *Run/Debug* on left side, under the *Options* tab, set Working Directory to `$PROJECT_DIR` and check ‘use custom working directory’.
+  3. Compile and run the project. You should see a single quadcopter, falling down.
+
+### Linux ###
+
+For Linux, the recommended IDE is QtCreator.
+
+1. Download and install QtCreator.
+2. Open the `.pro` file from the `<simulator>/project` directory.
+3. Compile and run the project (using the tab `Build` select the `qmake` option.  You should see a single quadcopter, falling down.
+
+**NOTE:** You may need to install the GLUT libs using `sudo apt-get install freeglut3-dev`
+
+
+### Advanced Versions ###
+
+These are some more advanced setup instructions for those of you who prefer to use a different IDE or build the code manually.  Note that these instructions do assume a certain level of familiarity with the approach and are not as detailed as the instructions above.
+
+#### CLion IDE ####
+
+For those of you who are using the CLion IDE for developement on your platform, we have included the necessary `CMakeLists.txt` file needed to build the simulation.
+
+#### CMake on Linux ####
+
+For those of you interested in doing manual builds using `cmake`, we have provided a `CMakeLists.txt` file with the necessary configuration.
+
+**NOTE: This has only been tested on Ubuntu 16.04, however, these instructions should work for most linux versions.  Also note that these instructions assume knowledge of `cmake` and the required `cmake` dependencies are installed.**
+
+1. Create a new directory for the build files:
+
+```sh
+cd FCND-Controls-CPP
+mkdir build
+```
+
+2. Navigate to the build directory and run `cmake` and then compile and build the code:
+
+```sh
+cd build
+cmake ..
+make
+```
+
+3. You should now be able to compile and run the estimation simulator.
+
+# Estimation Project #
+
+
+This README is broken down into the following sections:
+
+ - [Setup](#setup) - the environment and code setup required to get started and a brief overview of the project structure
+ - [The Tasks](#the-tasks) - the tasks you will need to complete for the project
+ - [Tips and Tricks](#tips-and-tricks) - some additional tips and tricks you may find useful along the way
+ - [Submission](#submission) - overview of the requirements for your project submission
+
+
+## Setup ##
+
+This project will continue to use the C++ development environment you set up in the Controls C++ project.
+
+ 1. Clone the repository
+ ```
+ git clone https://github.com/udacity/FCND-Estimation-CPP.git
+ ```
+
+ 2. Import the code into your IDE like done in the [Controls C++ project](https://github.com/udacity/FCND-Controls-CPP#development-environment-setup)
+ 
+ 3. You should now be able to compile and run the estimation simulator just as you did in the controls project
+
+
+## Resources ##
+
+- The [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) document contains a helpful mathematical breakdown of the core elements on your estimator
