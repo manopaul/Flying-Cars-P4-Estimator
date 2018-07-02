@@ -58,7 +58,7 @@ Any changes to this file can be observed in real time and the effect is shown in
 
 ## The Scenarios ##
 
- - [1: Sensor Noise](#1-sensor-noise)
+ - [1: Sensor Noise](#1-Sensor-Noise-(scenario-`06_NoisySensors`)
  - [2: Attitude Estimation](#step-2-attitude-estimation)
  - [3: Prediction](#3-predictionp)
  - [4: Magnetometer Update](#4-magnetometer-update)
